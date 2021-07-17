@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { WeatherType } from "../../store/types";
 
@@ -6,17 +6,27 @@ interface WeatherProps {
   data: WeatherType;
   favorite: boolean;
   favorites: WeatherType[];
-  removeFavoritesHandler: (location: any) => void;
+  setFavorite: (favorite: boolean) => void;
+  // removeFavoritesHandler: (id: number, location: any) => void;
 }
 
-const index: React.FC<WeatherProps> = ({
+const Favorites: React.FC<WeatherProps> = ({
   data,
   favorite,
   favorites,
-  removeFavoritesHandler,
+  setFavorite,
+  // removeFavoritesHandler,
 }) => {
   const fahrenheit = (data.main.temp * 1.8 - 459.67).toFixed(0);
   const celsius = (data.main.temp - 273.15).toFixed(0);
+
+  const [arr, updateArr] = useState(favorites);
+
+  const removeFavoritesHandler = (e: any) => {
+    const name = e.target.getAttribute("name");
+    updateArr(arr.filter((location) => location.name !== name));
+    setFavorite(!favorite);
+  };
 
   return (
     <section>
@@ -25,7 +35,7 @@ const index: React.FC<WeatherProps> = ({
         <p> Add locations to favorites! </p>
       ) : (
         favorite &&
-        favorites?.map((location, id) => {
+        arr?.map((location, id) => {
           return (
             <StyledFavoriteCard key={id}>
               <img
@@ -45,7 +55,9 @@ const index: React.FC<WeatherProps> = ({
                   {fahrenheit} <sup>&#8457;</sup>
                 </h2>
               </div>
-              <button onClick={() => removeFavoritesHandler(id)}>Remove</button>
+              <button name={location.name} onClick={removeFavoritesHandler}>
+                Remove
+              </button>
             </StyledFavoriteCard>
           );
         })
@@ -83,4 +95,4 @@ const StyledFavoriteCard = styled.div`
   }
 `;
 
-export default index;
+export default Favorites;

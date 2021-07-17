@@ -31,18 +31,12 @@ const Weather: React.FC<WeatherProps> = ({
         <h1 className="country-name">
           {data.name}, {data.sys.country}
         </h1>
-        <input
+        <button
           className="add-favorite"
-          type="checkbox"
-          onChange={(e) => {
-            e.target.checked = true;
-            onSetFavorite(e.target.checked);
-            console.log(`checked: ${e.target.checked}`);
-            console.log(`fav: ${favorite}`);
-            addToFavoritesHandler();
-          }}
-          checked={favorite}
-        />
+          onClick={() => addToFavoritesHandler()}
+        >
+          Add to Favorites
+        </button>
       </div>
 
       <p className="weather-desc"> {data.weather[0].description} </p>
@@ -86,11 +80,15 @@ const StyledWeather = styled.section`
     }
 
     .add-favorite {
-      width: 25px;
-      height: 25px;
+      padding: 1em;
+      border-radius: 1em;
       cursor: pointer;
       background-color: #eee;
       border: solid #eee;
+
+      &:active {
+        background-color: white;
+      }
     }
   }
 

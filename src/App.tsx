@@ -25,24 +25,19 @@ const App: FC = () => {
   const error = useSelector((state: RootState) => state.weather.error);
   const alertMsg = useSelector((state: RootState) => state.alert.message);
 
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(true);
   const favorites: WeatherType[] = [];
   const location = weatherData;
 
   // Pushing the favorite location into the favorite array
   const addToFavoritesHandler = () => {
+    setFavorite(true);
     if (location && favorite && !favorites.find((o) => o === location)) {
       favorites.push(...favorites, location);
-      console.log(favorites);
-      console.log(`favorite: ${favorite}`);
     }
+    console.log(favorite);
+    console.log(favorites);
     return favorites;
-  };
-
-  const removeFavoritesHandler = (id: number) => {
-    if (id) {
-      favorites.splice(id);
-    }
   };
 
   return (
@@ -89,7 +84,8 @@ const App: FC = () => {
                 favorites={favorites}
                 favorite={favorite}
                 data={weatherData}
-                removeFavoritesHandler={removeFavoritesHandler}
+                setFavorite={setFavorite}
+                // removeFavoritesHandler={removeFavoritesHandler}
               />
             )}
           </Route>

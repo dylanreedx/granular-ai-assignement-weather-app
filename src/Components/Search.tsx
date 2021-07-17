@@ -25,7 +25,7 @@ const Search: FC<SearchProps> = ({ title, setFavorite }) => {
       return dispatch(setAlert("A city is required to search"));
     }
 
-    setFavorite(false);
+    // setFavorite(false);
 
     dispatch(setLoading());
     dispatch(getWeather(city));
