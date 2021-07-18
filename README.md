@@ -2,6 +2,10 @@
 
 ## **How it works**
 
+1. If you want secure your API key create .env file
+2. Name the variable within the file REACT_APP_YOUR_KEY_NAME
+3. With this assignment I have included my key, so the deployment process would be easier.
+
 You'll be greeted with an input of which you can search any city and or country for the current weather.
 
 ## **Your favorites**

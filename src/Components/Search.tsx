@@ -5,12 +5,9 @@ import styled from "styled-components";
 import { setAlert } from "../store/actions/alertActions";
 import { getWeather, setLoading } from "../store/actions/weatherActions";
 
-interface SearchProps {
-  title: string;
-  setFavorite: any;
-}
+interface SearchProps {}
 
-const Search: FC<SearchProps> = ({ title, setFavorite }) => {
+const Search: FC<SearchProps> = () => {
   const dispatch = useDispatch();
   const [city, setCity] = useState("");
 
@@ -24,8 +21,6 @@ const Search: FC<SearchProps> = ({ title, setFavorite }) => {
     if (city.trim() === "") {
       return dispatch(setAlert("A city is required to search"));
     }
-
-    // setFavorite(false);
 
     dispatch(setLoading());
     dispatch(getWeather(city));

@@ -10,12 +10,8 @@ interface WeatherProps {
   favorites: WeatherType[];
 }
 
-const Weather: React.FC<WeatherProps> = ({
-  data,
-  favorite,
-  onSetFavorite,
-  addToFavoritesHandler,
-}) => {
+const Weather: React.FC<WeatherProps> = ({ data, addToFavoritesHandler }) => {
+  // Calculated temperatures
   const fahr = (data.main.temp * 1.8 - 459.67).toFixed(0);
   const fahrenheitHigh = (data.main.temp * 1.8 - 459.67 + 5).toFixed(0);
   const fahrenheitLow = (data.main.temp * 1.8 - 459.67 - 4).toFixed(0);
@@ -23,6 +19,7 @@ const Weather: React.FC<WeatherProps> = ({
   const celsiusHigh = (data.main.temp - 273.15 + 7).toFixed(0);
   const celsiusLow = (data.main.temp - 273.15 - 3).toFixed(0);
 
+  // State handling the toggle between celsius and Fahrenheit.
   const [celsius, setCelsius] = useState(false);
 
   return (

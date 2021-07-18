@@ -29,17 +29,17 @@ const App: FC = () => {
   const alertMsg = useSelector((state: RootState) => state.alert.message);
 
   const [favorite, setFavorite] = useState(true);
-  const favorites: WeatherType[] = [];
-  const location = weatherData;
+  let favorites: WeatherType[] = [];
+
+  // Easier readability
+  let location = weatherData;
 
   // Pushing the favorite location into the favorite array
   const addToFavoritesHandler = () => {
     setFavorite(true);
     if (location && favorite && !favorites.find((o) => o === location)) {
-      favorites.push(...favorites, location);
+      favorites.push(location);
     }
-    console.log(favorite);
-    console.log(favorites);
     return favorites;
   };
 
@@ -51,10 +51,7 @@ const App: FC = () => {
           <Switch>
             <Route path="/" exact>
               <StyledHome>
-                <Search
-                  title="Enter your desired city to see the current weather"
-                  setFavorite={setFavorite}
-                />
+                <Search />
 
                 {loading ? (
                   <h2 className="loading-text">Loading...</h2>

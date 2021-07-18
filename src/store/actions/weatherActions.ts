@@ -13,11 +13,10 @@ import {
 export const getWeather = (
   city: string
 ): ThunkAction<void, RootState, null, WeatherAction> => {
-  const api_key = process.env.REACT_APP_API_KEY;
   return async (dispatch) => {
     try {
       const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${api_key}`
+        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=4803886775f7e1a22fcd474da295c443`
       );
 
       if (!res.ok) {
