@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
@@ -13,6 +13,9 @@ import { setError } from "./store/actions/weatherActions";
 
 // components
 import Navbar from "./Components/Navbar";
+
+// Styles
+import theme from "./theme/";
 
 //pages
 import Favorites from "./Pages/Favorites";
@@ -42,55 +45,56 @@ const App: FC = () => {
 
   return (
     <div className="App">
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/" exact>
-            <StyledHome>
-              <Search
-                title="Enter your desired city to see the current weather"
-                setFavorite={setFavorite}
-              />
+      <ThemeProvider theme={theme}>
+        <Router>
+          <Navbar />
+          <Switch>
+            <Route path="/" exact>
+              <StyledHome>
+                <Search
+                  title="Enter your desired city to see the current weather"
+                  setFavorite={setFavorite}
+                />
 
-              {loading ? (
-                <h2 className="loading-text">Loading...</h2>
-              ) : (
-                weatherData && (
-                  <Weather
-                    data={weatherData}
-                    favorite={favorite}
-                    onSetFavorite={setFavorite}
-                    addToFavoritesHandler={addToFavoritesHandler}
-                    favorites={favorites}
+                {loading ? (
+                  <h2 className="loading-text">Loading...</h2>
+                ) : (
+                  weatherData && (
+                    <Weather
+                      data={weatherData}
+                      favorite={favorite}
+                      onSetFavorite={setFavorite}
+                      addToFavoritesHandler={addToFavoritesHandler}
+                      favorites={favorites}
+                    />
+                  )
+                )}
+
+                {alertMsg && (
+                  <Alert
+                    message={alertMsg}
+                    onClose={() => dispatch(setAlert(""))}
                   />
-                )
-              )}
+                )}
 
-              {alertMsg && (
-                <Alert
-                  message={alertMsg}
-                  onClose={() => dispatch(setAlert(""))}
+                {error && (
+                  <Alert message={error} onClose={() => dispatch(setError())} />
+                )}
+              </StyledHome>
+            </Route>
+            <Route path="/favorites">
+              {weatherData && (
+                <Favorites
+                  favorites={favorites}
+                  favorite={favorite}
+                  data={weatherData}
+                  setFavorite={setFavorite}
                 />
               )}
-
-              {error && (
-                <Alert message={error} onClose={() => dispatch(setError())} />
-              )}
-            </StyledHome>
-          </Route>
-          <Route path="/favorites">
-            {weatherData && (
-              <Favorites
-                favorites={favorites}
-                favorite={favorite}
-                data={weatherData}
-                setFavorite={setFavorite}
-                // removeFavoritesHandler={removeFavoritesHandler}
-              />
-            )}
-          </Route>
-        </Switch>
-      </Router>
+            </Route>
+          </Switch>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 };

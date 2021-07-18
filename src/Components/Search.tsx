@@ -54,18 +54,22 @@ const Search: FC<SearchProps> = ({ title, setFavorite }) => {
 
 const StyledHeader = styled.section`
   width: 100%;
-  background-color: #dddd;
+  background-color: ${(p) => p.theme.colors.primary.gray};
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 0 10em 0 10em;
-
+  border-radius: 0 5em 0 5em;
   padding: 3em 0;
+
+  @media only screen and (min-width: 768px) {
+    border-radius: 0 10em 0 10em;
+  }
 
   .caption {
     text-align: center;
     padding: 1em 0;
+    font-size: clamp(0.75em, 3vw, 1.125em);
   }
 
   form {
@@ -82,6 +86,10 @@ const StyledSearch = styled.input`
   border: none;
   border-radius: 15em;
   width: 35%;
+
+  &::placeholder {
+    font-size: clamp(0.95em, 1.5vw, 1.125em);
+  }
 `;
 
 const Button = styled.button`
@@ -100,12 +108,21 @@ const Button = styled.button`
     transform: rotate(-45deg);
     vertical-align: top;
     width: 0.8em;
-    border-color: gray;
+    border-color: black;
   }
 
   .chevron.right:before {
-    left: -2.5em;
+    left: 0.5em;
     transform: rotate(45deg);
+  }
+
+  @media only screen and (min-width: 768px) {
+    .chevron::before {
+      border-color: gray;
+    }
+    .chevron.right:before {
+      left: -2.5em;
+    }
   }
 `;
 

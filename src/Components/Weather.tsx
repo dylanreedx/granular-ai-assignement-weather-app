@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { WeatherType } from "../store/types";
 import styled from "styled-components";
 
@@ -16,8 +16,14 @@ const Weather: React.FC<WeatherProps> = ({
   onSetFavorite,
   addToFavoritesHandler,
 }) => {
-  const fahrenheit = (data.main.temp * 1.8 - 459.67).toFixed(0);
-  const celsius = (data.main.temp - 273.15).toFixed(0);
+  const fahr = (data.main.temp * 1.8 - 459.67).toFixed(0);
+  const fahrenheitHigh = (data.main.temp * 1.8 - 459.67 + 5).toFixed(0);
+  const fahrenheitLow = (data.main.temp * 1.8 - 459.67 - 4).toFixed(0);
+  const cel = (data.main.temp - 273.15).toFixed(0);
+  const celsiusHigh = (data.main.temp - 273.15 + 7).toFixed(0);
+  const celsiusLow = (data.main.temp - 273.15 - 3).toFixed(0);
+
+  const [celsius, setCelsius] = useState(false);
 
   return (
     <StyledWeather className="data-container">
@@ -28,29 +34,83 @@ const Weather: React.FC<WeatherProps> = ({
       />
 
       <div className="header">
-        <h1 className="country-name">
-          {data.name}, {data.sys.country}
-        </h1>
-        <button
-          className="add-favorite"
-          onClick={() => addToFavoritesHandler()}
-        >
-          Add to Favorites
-        </button>
+        <div className="main">
+          <h1 className="country-name">
+            {data.name}, {data.sys.country}
+          </h1>
+          <div className="btns">
+            <button
+              className="add-favorite btn"
+              onClick={() => addToFavoritesHandler()}
+            >
+              Add to Favorites
+            </button>
+            <button className="btn" onClick={() => setCelsius(!celsius)}>
+              Switch to {celsius ? "fahrenheit" : "celsius"}
+            </button>
+          </div>
+        </div>
+        <p className="weather-desc"> {data.weather[0].description} </p>
       </div>
 
-      <p className="weather-desc"> {data.weather[0].description} </p>
-      <div className="temps">
-        <h2>
-          {fahrenheit}
-          <sup>&#8457;</sup>
-        </h2>
-        <h2>
-          {celsius}
-          <sup>&#8451;</sup>
-        </h2>
+      <div className="info">
+        <div className="temps">
+          <h3 className="current-title title-t">Current</h3>
+          {!celsius && (
+            <div className="far">
+              <h2>
+                {fahr}
+                <sup>&#8457;</sup>
+              </h2>
+            </div>
+          )}
+          {celsius && (
+            <div className="cel">
+              <h2>
+                {cel}
+                <sup>&#8451;</sup>
+              </h2>
+            </div>
+          )}
+        </div>
+        <div className="high-low-temp">
+          <h3 className="title-t">High & Low Temp</h3>
+          {!celsius && (
+            <div className="far temp-h-l">
+              <h2>
+                {" "}
+                ⏶{fahrenheitHigh}
+                <sup>&#8457;</sup>{" "}
+              </h2>
+              <h2>
+                {" "}
+                ⏷{fahrenheitLow}
+                <sup>&#8457;</sup>{" "}
+              </h2>
+            </div>
+          )}
+          {celsius && (
+            <div className="cel temp-h-l">
+              <h2>
+                {" "}
+                ⏶{celsiusHigh}
+                <sup>&#8451;</sup>{" "}
+              </h2>
+              <h2>
+                {" "}
+                ⏷{celsiusLow}
+                <sup>&#8451;</sup>{" "}
+              </h2>
+            </div>
+          )}
+        </div>
+        <div className="other-info">
+          <div className="humidity">
+            <h3 className="title-t">Humidity</h3>
+            <h2> {data.main.humidity}% </h2>
+          </div>
+        </div>
       </div>
-      <div className="other-info"></div>
     </StyledWeather>
   );
 };
@@ -64,44 +124,110 @@ const StyledWeather = styled.section`
   padding: 5em;
   margin: 5em 0;
   border-radius: 2em;
+  color: ${(p) => p.theme.colors.primary.textClr};
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .btn {
+    padding: 1em;
+    border-radius: 1em;
+    cursor: pointer;
+    background-color: ${(p) => p.theme.colors.primary.gray};
+    border: none;
+
+    &:active {
+      background-color: white;
+    }
+  }
+
+  sup {
+    font-family: "Poppins", sans-serif;
+  }
+
+  .title-t {
+    font-weight: 600;
+    font-size: 1.225em;
+    white-space: nowrap;
+  }
 
   .weather-icon {
-    width: 100%;
+    max-width: 100%;
   }
 
   .header {
     display: flex;
-    align-items: center;
-    gap: 1em;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    padding: 0 0 5em;
+    text-align: center;
+
+    .main {
+      display: flex;
+      flex-direction: column-reverse;
+    }
 
     .country-name {
       font-weight: 600;
-      font-size: 2em;
+      font-size: 1.5em;
     }
 
-    .add-favorite {
-      padding: 1em;
-      border-radius: 1em;
-      cursor: pointer;
-      background-color: #eee;
-      border: solid #eee;
-
-      &:active {
-        background-color: white;
-      }
+    .btns {
+      display: flex;
+      gap: 1em;
+      padding: 1em 0;
     }
   }
 
   .weather-desc {
     font-size: 1.225em;
+    width: 100%;
   }
 
-  .temps {
+  .info {
+    text-align: center;
     display: flex;
-    width: 100%;
-    justify-content: space-between;
-    padding: 1em 0;
-    font-size: 1.325em;
+    flex-direction: column;
+    gap: 4em;
+    justify-content: center;
+    align-items: center;
+
+    @media only screen and (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    .temps {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      text-align: center;
+      flex-direction: column;
+
+      h2 {
+        font-size: 1.325em;
+      }
+    }
+
+    .high-low-temp {
+      display: flex;
+      flex-direction: column;
+
+      .temp-h-l {
+        display: flex;
+        font-size: 1.325em;
+        justify-content: space-between;
+        gap: 1em;
+      }
+    }
+
+    .humidity {
+      h2 {
+        font-size: 1.325em;
+      }
+    }
   }
 `;
 

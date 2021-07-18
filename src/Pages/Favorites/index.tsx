@@ -29,8 +29,8 @@ const Favorites: React.FC<WeatherProps> = ({
   };
 
   return (
-    <section>
-      <h1 style={{ fontSize: "4em" }}>Your Favorites</h1>
+    <StyledSection>
+      <h1 className="title-t">Your Favorites</h1>
       {favorites.length === 0 ? (
         <p> Add locations to favorites! </p>
       ) : (
@@ -55,23 +55,41 @@ const Favorites: React.FC<WeatherProps> = ({
                   {fahrenheit} <sup>&#8457;</sup>
                 </h2>
               </div>
-              <button name={location.name} onClick={removeFavoritesHandler}>
+
+              <button
+                className="btn"
+                name={location.name}
+                onClick={removeFavoritesHandler}
+              >
                 Remove
               </button>
             </StyledFavoriteCard>
           );
         })
       )}
-    </section>
+    </StyledSection>
   );
 };
+
+const StyledSection = styled.section`
+  .title-t {
+    font-size: clamp(2em, 6vw, 3em);
+  }
+`;
 
 const StyledFavoriteCard = styled.div`
   width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   padding: 5em 0;
   border-bottom: 1px solid black;
+
+  @media only screen and (min-width: 768px) {
+    flex-direction: row;
+    align-items: center;
+  }
 
   img {
     min-width: 10%;
@@ -84,6 +102,11 @@ const StyledFavoriteCard = styled.div`
 
     .desc {
       font-size: 1.35em;
+      padding-bottom: 2em;
+
+      @media only screen and (min-width: 768px) {
+        padding-bottom: 0;
+      }
     }
   }
 
@@ -92,6 +115,24 @@ const StyledFavoriteCard = styled.div`
     font-size: 3em;
     gap: 2em;
     padding: 0 2em;
+    white-space: nowrap;
+    margin-bottom: 2em;
+
+    @media only screen and (min-width: 768px) {
+      margin-bottom: 0;
+    }
+  }
+
+  .btn {
+    padding: 1em;
+    border-radius: 1em;
+    cursor: pointer;
+    background-color: ${(p) => p.theme.colors.primary.gray};
+    border: none;
+
+    &:active {
+      background-color: white;
+    }
   }
 `;
 

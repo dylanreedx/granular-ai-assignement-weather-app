@@ -24,7 +24,11 @@ const StyledNavbar = styled.nav`
   padding: 2em;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+
+  @media only screen and (min-width: 768px) {
+    justify-content: flex-end;
+  }
 
   .nav-links {
     display: flex;
@@ -32,7 +36,7 @@ const StyledNavbar = styled.nav`
 
     li {
       padding: 1em 1.25em;
-      background-color: #dddddd;
+      background-color: ${(p) => p.theme.colors.primary.gray};
       border-radius: 10em;
       width: 8em;
       text-align: center;
